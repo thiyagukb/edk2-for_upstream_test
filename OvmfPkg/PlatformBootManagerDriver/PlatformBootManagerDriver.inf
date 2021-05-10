@@ -80,7 +80,7 @@
   gEfiDxeSmmReadyToLockProtocolGuid             # PROTOCOL SOMETIMES_PRODUCED
   gEfiLoadedImageProtocolGuid                   # PROTOCOL SOMETIMES_PRODUCED
   gEfiFirmwareVolume2ProtocolGuid               # PROTOCOL SOMETIMES_CONSUMED
-  gEfiPldPlatformBootManagerProtocolGuid        # PROTOCOL ALWAYS_PRODUCED
+  gUniversalPayloadPlatformBootManagerOverrideProtocolGuid        # PROTOCOL ALWAYS_PRODUCED
 
 [Guids]
   gEfiEndOfDxeEventGroupGuid

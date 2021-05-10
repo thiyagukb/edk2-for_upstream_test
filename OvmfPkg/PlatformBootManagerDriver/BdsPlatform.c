@@ -13,7 +13,7 @@
 #include <Library/Tcg2PhysicalPresenceLib.h>
 #include <Library/XenPlatformLib.h>
 #include <Library/DxeServicesLib.h>
-#include <Protocol/PldPlatformBootManager.h>
+#include <Protocol/PlatformBootManagerOverride.h>
 
 
 //
@@ -1738,7 +1738,7 @@ PlatformBootManagerUnableToBoot (
   }
 }
 
-STATIC EFI_PLD_PLATFORM_BOOTMANAGER_PROTOCOL mPldPlatformBootManager = {
+STATIC UNIVERSAL_PAYLOAD_PLATFORM_BOOT_MANAGER_OVERRIDE_PROTOCOL mPldPlatformBootManager = {
   PlatformBootManagerBeforeConsole,
   PlatformBootManagerAfterConsole,
   PlatformBootManagerWaitCallback,
@@ -1757,7 +1757,7 @@ InitPlatformBootManagerLib (
     EFI_STATUS                   Status;
     Status = gBS->InstallProtocolInterface (
                   &ImageHandle,
-                  &gEfiPldPlatformBootManagerProtocolGuid,
+                  &gUniversalPayloadPlatformBootManagerOverrideProtocolGuid,
                   EFI_NATIVE_INTERFACE,
                   &mPldPlatformBootManager
                   );
