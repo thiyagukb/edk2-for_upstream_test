@@ -9,7 +9,7 @@
 #include <UniversalPayload/PciRootBridges.h>
 #include <UniversalPayload/ExtraData.h>
 #include <Guid/MemoryTypeInformation.h>
-#include <Guid/AcpiBoardInfoGuid.h>
+//#include <Guid/AcpiBoardInfoGuid.h>
 
 #define ROW_LIMITER 16
 
@@ -281,6 +281,7 @@ PrintSmbiosTablGuidHob (
   @param[in] HobRaw          A pointer to the start of gUefiAcpiBoardInfoGuid HOB.
   @retval EFI_SUCCESS        If it completed successfully.
 **/
+/*
 EFI_STATUS
 PrintAcpiBoardInfoGuidHob (
   IN  UINT8          *HobRaw,
@@ -301,7 +302,7 @@ PrintAcpiBoardInfoGuidHob (
   DEBUG ((DEBUG_INFO, "   PcieBaseAddress = 0x%lx\n", AcpBoardInfo->PcieBaseAddress));
   DEBUG ((DEBUG_INFO, "   PcieBaseSize    = 0x%lx\n", AcpBoardInfo->PcieBaseSize));
   return EFI_SUCCESS;
-}
+}*/
 
 /**
   Print the information in Pci RootBridge Info Guid Hob.
@@ -415,7 +416,7 @@ GUID_HOB_PRINT_HANDLE GuidHobPrintHandleTable[] = {
   {&gUniversalPayloadSerialPortInfoGuid,    PrintSerialGuidHob,            "gUniversalPayloadSerialPortInfoGuid(Serial Port Info)"},
   {&gUniversalPayloadSmbios3TableGuid,      PrintSmbios3GuidHob,           "gUniversalPayloadSmbios3TableGuid(SmBios Guid)"},
   {&gUniversalPayloadSmbiosTableGuid,       PrintSmbiosTablGuidHob,        "gUniversalPayloadSmbiosTableGuid(SmBios Guid)"},
-  {&gUefiAcpiBoardInfoGuid,                 PrintAcpiBoardInfoGuidHob,     "gUefiAcpiBoardInfoGuid(Acpi Guid)"},
+ // {&gUefiAcpiBoardInfoGuid,                 PrintAcpiBoardInfoGuidHob,     "gUefiAcpiBoardInfoGuid(Acpi Guid)"},
   {&gUniversalPayloadPciRootBridgeInfoGuid, PrintPciRootBridgeInfoGuidHob, "gUniversalPayloadPciRootBridgeInfoGuid(Pci Guid)"},
   {&gEfiMemoryTypeInformationGuid,          PrintMemoryTypeInfoGuidHob,    "gEfiMemoryTypeInformationGuid(Memory Type Information Guid)"},
   {&gUniversalPayloadExtraDataGuid,         PrintExtraDataGuidHob,         "gUniversalPayloadExtraDataGuid(PayLoad Extra Data Guid)"}

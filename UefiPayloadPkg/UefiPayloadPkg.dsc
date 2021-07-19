@@ -388,6 +388,13 @@
   gUefiCpuPkgTokenSpaceGuid.PcdSevEsIsEnabled|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration|TRUE
 
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1TimerRegister|0
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetRegister|0
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetValue|0
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1aControlAddress|0
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1aEventAddress|0
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiGpe0EnableAddress|0
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform.
