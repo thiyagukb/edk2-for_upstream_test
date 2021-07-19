@@ -59,7 +59,6 @@
   gUefiSystemTableInfoGuid
   gEfiGraphicsInfoHobGuid
   gEfiGraphicsDeviceInfoHobGuid
-  gUefiAcpiBoardInfoGuid
   gEfiSmbiosTableGuid
   gEfiAcpiTableGuid
   gUefiSerialPortInfoGuid
