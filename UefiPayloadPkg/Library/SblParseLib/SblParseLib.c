@@ -15,6 +15,8 @@
 #include <Library/HobLib.h>
 #include <Library/BlParseLib.h>
 #include <IndustryStandard/Acpi.h>
+#include "SblSerialPortInfoGuid.h"
+#include "SystemTableInfoGuid.h"
 
 
 /**
@@ -35,7 +37,7 @@ GetParameterBase (
 {
   EFI_HOB_HANDOFF_INFO_TABLE          *HandoffTable;
 
-  HandoffTable = (EFI_HOB_HANDOFF_INFO_TABLE *)(UINTN) GET_BOOTLOADER_PARAMETER ();
+  HandoffTable = (EFI_HOB_HANDOFF_INFO_TABLE *)(UINTN) GET_BOOTLOADER_PARAMETER (1);
   if ((HandoffTable->Header.HobType == EFI_HOB_TYPE_HANDOFF) &&
     (HandoffTable->Header.HobLength == sizeof (EFI_HOB_HANDOFF_INFO_TABLE)) &&
     (HandoffTable->Header.Reserved == 0)) {
@@ -110,9 +112,9 @@ ParseMemoryInfo (
 }
 
 /**
-  Acquire acpi table and smbios table from slim bootloader
+  Acquire smbios table from slim bootloader
 
-  @param  SystemTableInfo           Pointer to the system table info
+  @param  SystemTableInfo           Pointer to the SMBIOS table info
 
   @retval RETURN_SUCCESS            Successfully find out the tables.
   @retval RETURN_NOT_FOUND          Failed to find the tables.
@@ -120,8 +122,8 @@ ParseMemoryInfo (
 **/
 RETURN_STATUS
 EFIAPI
-ParseSystemTable (
-  OUT SYSTEM_TABLE_INFO     *SystemTableInfo
+ParseSmbiosTable (
+  OUT SMBIOS_TABLE_HOB     *SmbiosTable
   )
 {
   SYSTEM_TABLE_INFO         *TableInfo;
@@ -132,7 +134,36 @@ ParseSystemTable (
     return RETURN_NOT_FOUND;
   }
 
-  CopyMem (SystemTableInfo, TableInfo, sizeof (SYSTEM_TABLE_INFO));
+  SmbiosTable->TableAddress = TableInfo->SmbiosTableBase;
+
+  return RETURN_SUCCESS;
+}
+
+
+/**
+  Acquire acpi table from slim bootloader
+
+  @param  AcpiTableHob              Pointer to the ACPI table info
+
+  @retval RETURN_SUCCESS            Successfully find out the tables.
+  @retval RETURN_NOT_FOUND          Failed to find the tables.
+
+**/
+RETURN_STATUS
+EFIAPI
+ParseAcpiTableInfo (
+  OUT ACPI_TABLE_HOB        *AcpiTableHob
+  )
+{
+  SYSTEM_TABLE_INFO         *TableInfo;
+
+  TableInfo = (SYSTEM_TABLE_INFO *)GetGuidHobDataFromSbl (&gUefiSystemTableInfoGuid);
+  if (TableInfo == NULL) {
+    ASSERT (FALSE);
+    return RETURN_NOT_FOUND;
+  }
+
+  AcpiTableHob->TableAddress = TableInfo->AcpiTableBase;
 
   return RETURN_SUCCESS;
 }
