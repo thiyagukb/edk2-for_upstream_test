@@ -45,3 +45,4 @@
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress

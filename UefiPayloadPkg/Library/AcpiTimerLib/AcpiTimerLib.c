@@ -10,10 +10,106 @@
 #include <Library/TimerLib.h>
 #include <Library/BaseLib.h>
 #include <Library/IoLib.h>
+#include <Library/HobLib.h>
 #include <Library/DebugLib.h>
 #include <IndustryStandard/Acpi.h>
-
+#include <UniversalPayload/AcpiTable.h>
+#include <Guid/AcpiBoardInfoGuid.h>
 #define ACPI_TIMER_COUNT_SIZE  BIT24
+
+UINT32   mPmTimerReg = 0;
+
+/**
+  get PM1 timer register address from ACPI table
+
+  @param[in]  AcpiTableBase        ACPI table start address in memory
+
+  @retval PM Timer BASE            Successfully get it from ACPI table.
+  @retval 0                        Failed to get PM1 timer from ACPI table
+
+**/
+UINT32
+GetPmTimerRegister (
+  IN   UINT64                                   AcpiTableBase
+  )
+{
+  EFI_ACPI_3_0_ROOT_SYSTEM_DESCRIPTION_POINTER  *Rsdp;
+  EFI_ACPI_DESCRIPTION_HEADER                   *Rsdt;
+  UINT32                                        *Entry32;
+  UINTN                                         Entry32Num;
+  EFI_ACPI_3_0_FIXED_ACPI_DESCRIPTION_TABLE     *Fadt;
+  UINTN                                         Idx;
+  UINT32                                        *Signature;
+
+  //
+  // Search Rsdt First
+  //
+  Fadt = NULL;
+  Rsdp = (EFI_ACPI_3_0_ROOT_SYSTEM_DESCRIPTION_POINTER *)(UINTN)AcpiTableBase;
+  Rsdt = (EFI_ACPI_DESCRIPTION_HEADER *)(UINTN)(Rsdp->RsdtAddress);
+  if (Rsdt != NULL) {
+    Entry32  = (UINT32 *)(Rsdt + 1);
+    Entry32Num = (Rsdt->Length - sizeof(EFI_ACPI_DESCRIPTION_HEADER)) >> 2;
+    for (Idx = 0; Idx < Entry32Num; Idx++) {
+      Signature = (UINT32 *)(UINTN)Entry32[Idx];
+      if (*Signature == EFI_ACPI_3_0_FIXED_ACPI_DESCRIPTION_TABLE_SIGNATURE) {
+        Fadt = (EFI_ACPI_3_0_FIXED_ACPI_DESCRIPTION_TABLE *)Signature;
+        DEBUG ((DEBUG_INFO, "Found Fadt in Rsdt\n"));
+        break;
+      }
+    }
+  }
+
+  if (Fadt == NULL) {
+    return 0;
+  }
+
+  return  Fadt->PmTmrBlk;
+}
+
+
+/**
+  The constructor function enables ACPI IO space.
+
+  If ACPI I/O space not enabled, this function will enable it.
+  It will always return RETURN_SUCCESS.
+
+  @retval EFI_SUCCESS   The constructor always returns RETURN_SUCCESS.
+
+**/
+RETURN_STATUS
+EFIAPI
+AcpiTimerLibConstructor (
+  VOID
+  )
+{
+  EFI_HOB_GUID_TYPE  *GuidHob;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE *AcpiTableHob;
+
+  //
+  // Find the acpi table information guid hob
+  //
+  GuidHob = GetFirstGuidHob (&gEfiAcpiTableGuid);
+  if (GuidHob != NULL) {
+    AcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
+    mPmTimerReg = (UINTN)GetPmTimerRegister ((UINT64)(UINTN)AcpiTableHob->Rsdp);
+  } else {
+    ACPI_BOARD_INFO    *pAcpiBoardInfo;
+    //
+    // Find the acpi board information guid hob
+    //
+    GuidHob = GetFirstGuidHob (&gUefiAcpiBoardInfoGuid);
+    ASSERT (GuidHob != NULL);
+  
+    pAcpiBoardInfo = (ACPI_BOARD_INFO *)GET_GUID_HOB_DATA (GuidHob);
+  
+    mPmTimerReg = (UINT32)pAcpiBoardInfo->PmTimerRegBase;
+  }
+
+
+
+  return EFI_SUCCESS;
+}
 
 /**
   Internal function to read the current tick counter of ACPI.

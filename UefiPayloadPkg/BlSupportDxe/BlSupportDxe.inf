@@ -44,6 +44,7 @@
 [Guids]
   gEfiGraphicsInfoHobGuid
   gEfiAcpiTableGuid
+  gUefiAcpiBoardInfoGuid
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution
