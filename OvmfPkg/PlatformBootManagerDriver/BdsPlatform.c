@@ -13,6 +13,8 @@
 #include <Library/Tcg2PhysicalPresenceLib.h>
 #include <Library/XenPlatformLib.h>
 #include <Library/DxeServicesLib.h>
+#include <Protocol/PldPlatformBootManager.h>
+
 
 //
 // Global data
@@ -336,6 +338,7 @@ SaveS3BootScript (
   > Authentication action: 1. connect Auth devices;
   >                        2. Identify auto logon user.
 **/
+STATIC
 VOID
 EFIAPI
 PlatformBootManagerBeforeConsole (
@@ -346,8 +349,9 @@ PlatformBootManagerBeforeConsole (
   EFI_STATUS    Status;
   UINT16        FrontPageTimeout;
   RETURN_STATUS PcdStatus;
-
+  DEBUG((DEBUG_ERROR,"%a:%d\n",__FILE__,__LINE__));
   DEBUG ((DEBUG_INFO, "PlatformBootManagerBeforeConsole\n"));
+  DEBUG((DEBUG_ERROR,"%a:%d\n",__FILE__,__LINE__));
   InstallDevicePathCallback ();
 
   VisitAllInstancesOfProtocol (&gEfiPciRootBridgeIoProtocolGuid,
@@ -1436,6 +1440,7 @@ SaveS3BootScript (
   // implementation embeds a deep copy of the info in the boot script, rather
   // than storing just a pointer to runtime or NVS storage.
   //
+  DEBUG((DEBUG_ERROR,"%a:%d\n",__FILE__,__LINE__));
   Status = BootScript->Write(BootScript, EFI_BOOT_SCRIPT_INFORMATION_OPCODE,
                          (UINT32) sizeof Info,
                          (EFI_PHYSICAL_ADDRESS)(UINTN) &Info);
@@ -1456,6 +1461,7 @@ SaveS3BootScript (
   > Dispatch aditional option roms
   > Special boot: e.g.: USB boot, enter UI
 **/
+STATIC
 VOID
 EFIAPI
 PlatformBootManagerAfterConsole (
@@ -1636,6 +1642,7 @@ InstallDevicePathCallback (
 
   @param TimeoutRemain  The remaining timeout.
 **/
+STATIC
 VOID
 EFIAPI
 PlatformBootManagerWaitCallback (
@@ -1677,6 +1684,7 @@ PlatformBootManagerWaitCallback (
 
   If this function returns, BDS attempts to enter an infinite loop.
 **/
+STATIC
 VOID
 EFIAPI
 PlatformBootManagerUnableToBoot (
@@ -1728,4 +1736,30 @@ PlatformBootManagerUnableToBoot (
   for (;;) {
     EfiBootManagerBoot (&BootManagerMenu);
   }
+}
+
+STATIC EFI_PLD_PLATFORM_BOOTMANAGER_PROTOCOL mPldPlatformBootManager = {
+  PlatformBootManagerBeforeConsole,
+  PlatformBootManagerAfterConsole,
+  PlatformBootManagerWaitCallback,
+  PlatformBootManagerUnableToBoot,
+};
+
+// Entry point of this driver
+//
+EFI_STATUS
+EFIAPI
+InitPlatformBootManagerLib (
+  IN EFI_HANDLE       ImageHandle,
+  IN EFI_SYSTEM_TABLE *SystemTable
+  )
+{
+    EFI_STATUS                   Status;
+    Status = gBS->InstallProtocolInterface (
+                  &ImageHandle,
+                  &gEfiPldPlatformBootManagerProtocolGuid,
+                  EFI_NATIVE_INTERFACE,
+                  &mPldPlatformBootManager
+                  );
+    return Status;
 }
