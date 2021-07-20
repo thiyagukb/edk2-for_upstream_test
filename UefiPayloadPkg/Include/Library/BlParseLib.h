@@ -17,6 +17,8 @@
 #include <Guid/SmmS3CommunicationInfoGuid.h>
 #include <Guid/SpiFlashInfoGuid.h>
 #include <Guid/NvVariableInfoGuid.h>
+#include <UniversalPayload/AcpiTable.h>
+#include <UniversalPayload/SmbiosTable.h>
 
 #ifndef __BOOTLOADER_PARSE_LIB__
 #define __BOOTLOADER_PARSE_LIB__
