@@ -41,12 +41,8 @@
   gLoaderMemoryMapInfoGuid
   gEfiGraphicsInfoHobGuid
   gEfiGraphicsDeviceInfoHobGuid
-  gSmmInformationGuid
   gUefiAcpiBoardInfoGuid
 
-  gDeviceTableHobGuid
-  gFlashMapInfoGuid
-  gLoaderPlatformInfoGuid
 
 [Pcd]
   gUefiPayloadPkgTokenSpaceGuid.PcdPayloadStackTop
