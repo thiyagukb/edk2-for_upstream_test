@@ -1,6 +1,5 @@
 /** @file
-  This driver will report some MMIO/IO resources to dxe core, extract smbios and acpi
-  tables from bootloader.
+  This driver will set PCDs based on information from the bootloader.
 
   Copyright (c) 2014 - 2021, Intel Corporation. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -175,10 +174,9 @@ BlDxeEntryPoint (
   )
 {
   EFI_STATUS Status;
-  EFI_HOB_GUID_TYPE          *GuidHob;
-  EFI_PEI_GRAPHICS_INFO_HOB  *GfxInfo;
-  ACPI_TABLE_HOB             *AcpiTableHob;
-  SMBIOS_TABLE_HOB           *SmbiosTable;
+  EFI_HOB_GUID_TYPE            *GuidHob;
+  EFI_PEI_GRAPHICS_INFO_HOB    *GfxInfo;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE *AcpiTableHob;
 
   Status = EFI_SUCCESS;
 
@@ -188,23 +186,9 @@ BlDxeEntryPoint (
   GuidHob = GetFirstGuidHob (&gEfiAcpiTableGuid);
   ASSERT (GuidHob != NULL);
   if (GuidHob != NULL) {
-    AcpiTableHob = (ACPI_TABLE_HOB *)GET_GUID_HOB_DATA (GuidHob);
-    DEBUG ((DEBUG_ERROR, "Install Acpi Table at 0x%lx \n", AcpiTableHob->TableAddress));
-    Status = gBS->InstallConfigurationTable (&gEfiAcpiTableGuid, (VOID *)(UINTN)AcpiTableHob->TableAddress);
-    ASSERT_EFI_ERROR (Status);
-
-    Status = SetPcdsUsingAcpiTable (AcpiTableHob->TableAddress);
-    ASSERT_EFI_ERROR (Status);
-  }
-
-  //
-  // Install Smbios Table
-  //
-  GuidHob = GetFirstGuidHob (&gEfiSmbiosTableGuid);
-  if (GuidHob != NULL) {
-    SmbiosTable = (SMBIOS_TABLE_HOB *)GET_GUID_HOB_DATA (GuidHob);
-    DEBUG ((DEBUG_ERROR, "Install SMBIOS Table at 0x%lx \n", SmbiosTable->TableAddress));
-    Status = gBS->InstallConfigurationTable (&gEfiSmbiosTableGuid, (VOID *)(UINTN)SmbiosTable->TableAddress);
+    AcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
+    DEBUG ((DEBUG_ERROR, "Install Acpi Table at 0x%lx \n", AcpiTableHob->Rsdp));
+    Status = SetPcdsUsingAcpiTable ((UINT64)(UINTN)AcpiTableHob->Rsdp);
     ASSERT_EFI_ERROR (Status);
   }
 

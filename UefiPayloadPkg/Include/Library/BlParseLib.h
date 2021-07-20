@@ -10,13 +10,13 @@
 #include <Guid/GraphicsInfoHob.h>
 #include <Guid/MemoryMapInfoGuid.h>
 #include <Guid/SerialPortInfoGuid.h>
-#include <Guid/AcpiTableGuid.h>
-#include <Guid/SmbiosTableGuid.h>
 #include <Guid/SmramMemoryReserve.h>
 #include <Guid/SmmRegisterInfoGuid.h>
 #include <Guid/SmmS3CommunicationInfoGuid.h>
 #include <Guid/SpiFlashInfoGuid.h>
 #include <Guid/NvVariableInfoGuid.h>
+#include <UniversalPayload/AcpiTable.h>
+#include <UniversalPayload/SmbiosTable.h>
 
 #ifndef __BOOTLOADER_PARSE_LIB__
 #define __BOOTLOADER_PARSE_LIB__
@@ -72,7 +72,7 @@ ParseMemoryInfo (
 RETURN_STATUS
 EFIAPI
 ParseSmbiosTable (
-  OUT SMBIOS_TABLE_HOB     *SmbiosTable
+  OUT UNIVERSAL_PAYLOAD_SMBIOS_TABLE     *SmbiosTable
   );
 
 /**
@@ -87,7 +87,7 @@ ParseSmbiosTable (
 RETURN_STATUS
 EFIAPI
 ParseAcpiTableInfo (
-  OUT ACPI_TABLE_HOB        *AcpiTableHob
+  OUT UNIVERSAL_PAYLOAD_ACPI_TABLE        *AcpiTableHob
   );
 
 
