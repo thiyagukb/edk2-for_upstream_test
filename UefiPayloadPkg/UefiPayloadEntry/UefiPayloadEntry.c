@@ -385,16 +385,16 @@ BuildHobFromBl (
   )
 {
   EFI_STATUS                       Status;
-  SYSTEM_TABLE_INFO                SysTableInfo;
-  SYSTEM_TABLE_INFO                *NewSysTableInfo;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE    *NewAcpiTableHob;
+  UNIVERSAL_PAYLOAD_SMBIOS_TABLE  *NewSmbiosTable;
   ACPI_BOARD_INFO                  AcpiBoardInfo;
   ACPI_BOARD_INFO                  *NewAcpiBoardInfo;
   EFI_PEI_GRAPHICS_INFO_HOB        GfxInfo;
   EFI_PEI_GRAPHICS_INFO_HOB        *NewGfxInfo;
   EFI_PEI_GRAPHICS_DEVICE_INFO_HOB GfxDeviceInfo;
   EFI_PEI_GRAPHICS_DEVICE_INFO_HOB *NewGfxDeviceInfo;
-  UNIVERSAL_PAYLOAD_SMBIOS_TABLE   *SmBiosTableHob;
-  UNIVERSAL_PAYLOAD_ACPI_TABLE     *AcpiTableHob;
+  UNIVERSAL_PAYLOAD_SMBIOS_TABLE   SmBiosTableHob;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE     AcpiTableHob;
 
   //
   // First find TOLUD
@@ -437,41 +437,32 @@ BuildHobFromBl (
 
 
   //
-  // Create guid hob for system tables like acpi table and smbios table
+  // Create smbios table guid hob
   //
-  Status = ParseSystemTable(&SysTableInfo);
-  ASSERT_EFI_ERROR (Status);
+  Status = ParseSmbiosTable(&SmBiosTableHob);
   if (!EFI_ERROR (Status)) {
-    NewSysTableInfo = BuildGuidHob (&gUefiSystemTableInfoGuid, sizeof (SYSTEM_TABLE_INFO));
-    ASSERT (NewSysTableInfo != NULL);
-    CopyMem (NewSysTableInfo, &SysTableInfo, sizeof (SYSTEM_TABLE_INFO));
-    DEBUG ((DEBUG_INFO, "Detected Acpi Table at 0x%lx, length 0x%x\n", SysTableInfo.AcpiTableBase, SysTableInfo.AcpiTableSize));
-    DEBUG ((DEBUG_INFO, "Detected Smbios Table at 0x%lx, length 0x%x\n", SysTableInfo.SmbiosTableBase, SysTableInfo.SmbiosTableSize));
+    NewSmbiosTable = BuildGuidHob (&gUniversalPayloadAcpiTableGuid, sizeof (SmBiosTableHob));
+    ASSERT (NewSmbiosTable != NULL);
+    CopyMem (NewSmbiosTable, &SmBiosTableHob, sizeof (SmBiosTableHob));
+    DEBUG ((DEBUG_INFO, "Detected Smbios Table at 0x%lx\n", SmBiosTableHob.SmBiosEntryPoint));
   }
-  //
-  // Creat SmBios table Hob
-  //
-  SmBiosTableHob = BuildGuidHob (&gUniversalPayloadSmbiosTableGuid, sizeof (UNIVERSAL_PAYLOAD_SMBIOS_TABLE));
-  ASSERT (SmBiosTableHob != NULL);
-  SmBiosTableHob->Header.Revision = UNIVERSAL_PAYLOAD_SMBIOS_TABLE_REVISION;
-  SmBiosTableHob->Header.Length = sizeof (UNIVERSAL_PAYLOAD_SMBIOS_TABLE);
-  SmBiosTableHob->SmBiosEntryPoint = SysTableInfo.SmbiosTableBase;
-  DEBUG ((DEBUG_INFO, "Create smbios table gUniversalPayloadSmbiosTableGuid guid hob\n"));
 
   //
-  // Creat ACPI table Hob
+  // Create acpi table guid hob
   //
-  AcpiTableHob = BuildGuidHob (&gUniversalPayloadAcpiTableGuid, sizeof (UNIVERSAL_PAYLOAD_ACPI_TABLE));
-  ASSERT (AcpiTableHob != NULL);
-  AcpiTableHob->Header.Revision = UNIVERSAL_PAYLOAD_ACPI_TABLE_REVISION;
-  AcpiTableHob->Header.Length = sizeof (UNIVERSAL_PAYLOAD_ACPI_TABLE);
-  AcpiTableHob->Rsdp = SysTableInfo.AcpiTableBase;
-  DEBUG ((DEBUG_INFO, "Create smbios table gUniversalPayloadAcpiTableGuid guid hob\n"));
+  Status = ParseAcpiTableInfo(&AcpiTableHob);
+  ASSERT_EFI_ERROR (Status);
+  if (!EFI_ERROR (Status)) {
+    NewAcpiTableHob = BuildGuidHob (&gUniversalPayloadSmbiosTableGuid, sizeof (AcpiTableHob));
+    ASSERT (NewAcpiTableHob != NULL);
+    CopyMem (NewAcpiTableHob, &AcpiTableHob, sizeof (AcpiTableHob));
+    DEBUG ((DEBUG_INFO, "Detected ACPI Table at 0x%lx\n", AcpiTableHob.Rsdp));
+  }
 
   //
   // Create guid hob for acpi board information
   //
-  Status = ParseAcpiInfo (SysTableInfo.AcpiTableBase, &AcpiBoardInfo);
+  Status = ParseAcpiInfo (AcpiTableHob.Rsdp, &AcpiBoardInfo);
   ASSERT_EFI_ERROR (Status);
   if (!EFI_ERROR (Status)) {
     NewAcpiBoardInfo = BuildGuidHob (&gUefiAcpiBoardInfoGuid, sizeof (ACPI_BOARD_INFO));
