@@ -293,10 +293,7 @@
     <ExtraDependency>
         $(MAKE_FILE)
 
-    <OutputFile.CLANGDWARF>
-        $(DEBUG_DIR)(+)$(MODULE_NAME).elf
-
-    <OutputFile.MSFT, OutputFile.INTEL, OutputFile.GCC>
+    <OutputFile>
         $(DEBUG_DIR)(+)$(MODULE_NAME).dll
 
     <Command.MSFT, Command.INTEL>
@@ -305,11 +302,6 @@
 
     <Command.CLANGPDB>
         "$(DLINK)" /OUT:${dst} $(DLINK_FLAGS) $(DLINK_SPATH) @$(STATIC_LIBRARY_FILES_LIST) $(DLINK2_FLAGS)
-
-    <Command.CLANGDWARF>
-        "$(DLINK)" -o ${dst} $(DLINK_FLAGS) @$(STATIC_LIBRARY_FILES_LIST)        
-        "$(CP)" ${dst} $(DEBUG_DIR)(+)$(MODULE_NAME).debug
-        "$(OBJCOPY)" --strip-unneeded -R .eh_frame ${dst}
 
     <Command.GCC>
         "$(DLINK)" -o ${dst} $(DLINK_FLAGS) -Wl,--start-group,@$(STATIC_LIBRARY_FILES_LIST),--end-group $(CC_FLAGS) $(DLINK2_FLAGS)
