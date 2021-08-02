@@ -13,7 +13,6 @@
 #include <UniversalPayload/AcpiTable.h>
 #include <UniversalPayload/SmbiosTable.h>
 #include <Guid/SystemTableInfoGuid.h>
-#include <Guid/AcpiBoardInfoGuid.h>
 
 #ifndef __BOOTLOADER_PARSE_LIB__
 #define __BOOTLOADER_PARSE_LIB__
