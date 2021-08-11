@@ -715,6 +715,7 @@
       NULL|MdeModulePkg/Library/LzmaCustomDecompressLib/LzmaCustomDecompressLib.inf
   }
 
+  OvmfPkg/AcpiPeim/OvmfAcpiPeim.inf 
   OvmfPkg/PlatformPei/PlatformPei.inf
   UefiCpuPkg/Universal/Acpi/S3Resume2Pei/S3Resume2Pei.inf {
     <LibraryClasses>
@@ -742,7 +743,11 @@
       NULL|SecurityPkg/Library/HashInstanceLibSm3/HashInstanceLibSm3.inf
   }
 !endif
-
+#OvmfPkg/AcpiPeim/OvmfAcpiPeim.inf {
+#  <LibraryClasses>
+#    QemuCfgPeiLib|OvmfPkg/Library/QemuFwCfgLib/QemuFwCfgPeiLib.inf
+#    MemEncryptSevPeiLib|OvmfPkg/Library/BaseMemEncryptSevLib/PeiMemEncryptSevLib.inf
+#}
 [Components.X64]
   #
   # DXE Phase modules
