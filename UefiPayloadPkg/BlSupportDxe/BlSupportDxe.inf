@@ -43,8 +43,7 @@
 
 [Guids]
   gEfiGraphicsInfoHobGuid
-  gEfiSmbiosTableGuid
-  gEfiAcpiTableGuid
+  gUniversalPayloadAcpiTableGuid
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution
@@ -53,6 +52,12 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseSize
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1TimerRegister
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetRegister
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetValue
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1aControlAddress
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1aEventAddress
+  gUefiPayloadPkgTokenSpaceGuid.PcdAcpiGpe0EnableAddress
   gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1TimerRegister
   gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetRegister
   gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetValue

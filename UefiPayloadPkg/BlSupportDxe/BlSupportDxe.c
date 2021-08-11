@@ -251,8 +251,6 @@ BlDxeEntryPoint (
   EFI_HOB_GUID_TYPE                *GuidHob;
   EFI_PEI_GRAPHICS_INFO_HOB        *GfxInfo;
   UNIVERSAL_PAYLOAD_ACPI_TABLE     *AcpiTableHob;
-  UNIVERSAL_PAYLOAD_SMBIOS_TABLE   *SmbiosTable;
-
   Status = EFI_SUCCESS;
   //
   // Report MMIO/IO Resources
@@ -260,32 +258,6 @@ BlDxeEntryPoint (
   Status = ReserveResourceInGcd (TRUE, EfiGcdMemoryTypeMemoryMappedIo, 0xFEC00000, SIZE_4KB, 0, ImageHandle); // IOAPIC
 
   Status = ReserveResourceInGcd (TRUE, EfiGcdMemoryTypeMemoryMappedIo, 0xFED00000, SIZE_1KB, 0, ImageHandle); // HPET
-
-  //
-  // Install Acpi Table
-  //
-  GuidHob = GetFirstGuidHob (&gEfiAcpiTableGuid);
-  ASSERT (GuidHob != NULL);
-  if (GuidHob != NULL) {
-    AcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
-    DEBUG ((DEBUG_ERROR, "Install Acpi Table at 0x%lx \n", AcpiTableHob->Rsdp));
-    Status = gBS->InstallConfigurationTable (&gEfiAcpiTableGuid, (VOID *)(UINTN)AcpiTableHob->Rsdp);
-    ASSERT_EFI_ERROR (Status);
-
-    Status = SetPcdsUsingAcpiTable (AcpiTableHob->Rsdp);
-    ASSERT_EFI_ERROR (Status);
-  }
-
-  //
-  // Install Smbios Table
-  //
-  GuidHob = GetFirstGuidHob (&gEfiSmbiosTableGuid);
-  if (GuidHob != NULL) {
-    SmbiosTable = (UNIVERSAL_PAYLOAD_SMBIOS_TABLE *)GET_GUID_HOB_DATA (GuidHob);
-    DEBUG ((DEBUG_ERROR, "Install SMBIOS Table at 0x%lx \n", SmbiosTable->SmBiosEntryPoint));
-    Status = gBS->InstallConfigurationTable (&gEfiSmbiosTableGuid, (VOID *)(UINTN)SmbiosTable->SmBiosEntryPoint);
-    ASSERT_EFI_ERROR (Status);
-  }
 
   //
   // Find the frame buffer information and update PCDs
@@ -303,6 +275,16 @@ BlDxeEntryPoint (
     ASSERT_EFI_ERROR (Status);
   }
 
+  //
+  // Install Acpi Table
+  //
+  GuidHob = GetFirstGuidHob (&gUniversalPayloadAcpiTableGuid);
+ if (GuidHob != NULL) {
+   AcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
+   DEBUG ((DEBUG_ERROR, "Install Acpi Table at 0x%lx \n", AcpiTableHob->Rsdp));
+   Status = SetPcdsUsingAcpiTable ((UINT64)(UINTN)AcpiTableHob->Rsdp);
+   ASSERT_EFI_ERROR (Status);
+ }
   return EFI_SUCCESS;
 }
 
