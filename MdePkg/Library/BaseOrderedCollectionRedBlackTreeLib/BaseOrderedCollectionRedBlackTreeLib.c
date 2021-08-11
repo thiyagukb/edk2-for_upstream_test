@@ -35,6 +35,8 @@ typedef ORDERED_COLLECTION_ENTRY        RED_BLACK_TREE_NODE;
 typedef ORDERED_COLLECTION_USER_COMPARE RED_BLACK_TREE_USER_COMPARE;
 typedef ORDERED_COLLECTION_KEY_COMPARE  RED_BLACK_TREE_KEY_COMPARE;
 
+#pragma pack (1)
+
 struct ORDERED_COLLECTION {
   RED_BLACK_TREE_NODE         *Root;
   RED_BLACK_TREE_USER_COMPARE UserStructCompare;
@@ -48,7 +50,7 @@ struct ORDERED_COLLECTION_ENTRY {
   RED_BLACK_TREE_NODE  *Right;
   RED_BLACK_TREE_COLOR Color;
 };
-
+#pragma pack ()
 
 /**
   Retrieve the user structure linked by the specified tree node.
