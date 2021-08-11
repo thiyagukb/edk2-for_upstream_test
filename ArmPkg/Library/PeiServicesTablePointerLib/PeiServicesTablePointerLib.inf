@@ -17,7 +17,7 @@
   INF_VERSION                    = 0x00010005
   BASE_NAME                      = PeiServicesTablePointerLib
   FILE_GUID                      = C3C9C4ED-EB8A-4548-BE1B-ABB0B6F35B1E
-  MODULE_TYPE                    = PEIM
+  MODULE_TYPE                    = 
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = PeiServicesTablePointerLib|PEIM PEI_CORE SEC
 
