@@ -14,7 +14,6 @@
 #include <Library/DebugLib.h>
 #include <IndustryStandard/Acpi.h>
 #include <Guid/AcpiTableHob.h>
-#include <Guid/AcpiBoardInfoGuid.h>
 #include <UniversalPayload/AcpiTable.h>
 
 #define ACPI_TIMER_COUNT_SIZE  BIT24
@@ -70,55 +69,6 @@ GetPmTimerRegister (
 }
 
 
-/**
-  The constructor function enables ACPI IO space.
-
-  If ACPI I/O space not enabled, this function will enable it.
-  It will always return RETURN_SUCCESS.
-
-  @retval EFI_SUCCESS   The constructor always returns RETURN_SUCCESS.
-
-**/
-RETURN_STATUS
-EFIAPI
-AcpiTimerLibConstructor (
-  VOID
-  )
-{
-  EFI_HOB_GUID_TYPE   *GuidHob;
-  PLD_ACPI_TABLE      *UpldAcpiTable;
-  PLD_ACPI_TABLE_HOB  *AcpiTableHob;
-  ACPI_BOARD_INFO     *AcpiBoardInfo;
-  EFI_PHYSICAL_ADDRESS Rsdp;
-  //
-  // Find the acpi table information guid hob
-  //
-  GuidHob = GetFirstGuidHob (&gPldAcpiTableGuid);
-  if (GuidHob != NULL) {
-    if (FeaturePcdGet (PcdUniversalPayloadEnable)) {
-      UpldAcpiTable = (PLD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
-      Rsdp = UpldAcpiTable->Rsdp;
-    } else {
-      AcpiTableHob = (PLD_ACPI_TABLE_HOB *)GET_GUID_HOB_DATA (GuidHob);
-      Rsdp = AcpiTableHob->Rsdp;
-    }
-    mPmTimerReg = (UINTN)GetPmTimerRegister (Rsdp);
-  } else {
-    //
-    // Find the acpi board information guid hob
-    //
-    GuidHob = GetFirstGuidHob (&gUefiAcpiBoardInfoGuid);
-    ASSERT (GuidHob != NULL);
-
-    AcpiBoardInfo = (ACPI_BOARD_INFO *)GET_GUID_HOB_DATA (GuidHob);
-
-    mPmTimerReg = (UINT32)AcpiBoardInfo->PmTimerRegBase;
-  }
-
-
-
-  return EFI_SUCCESS;
-}
 
 /**
   Internal function to read the current tick counter of ACPI.
@@ -133,10 +83,8 @@ InternalAcpiGetTimerTick (
   VOID
   )
 {
-  if (mPmTimerReg == 0) {
-    AcpiTimerLibConstructor ();
-  }
-  return IoRead32 (mPmTimerReg);
+  ASSERT (PcdGet32 (PcdAcpiPm1TimerRegister) != 0);
+  return IoRead32 (PcdGet32 (PcdAcpiPm1TimerRegister));
 }
 
 /**

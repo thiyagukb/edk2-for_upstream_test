@@ -194,7 +194,7 @@ BlDxeEntryPoint (
     ASSERT_EFI_ERROR (Status);
   }
 
-  ACPI_BOARD_INFO            *AcpiBoardInfo;
+  /*ACPI_BOARD_INFO            *AcpiBoardInfo;
   //
   // Set PcdPciExpressBaseAddress and PcdPciExpressBaseSize by HOB info
   //
@@ -205,7 +205,16 @@ BlDxeEntryPoint (
     ASSERT_EFI_ERROR (Status);
     Status = PcdSet64S (PcdPciExpressBaseSize, AcpiBoardInfo->PcieBaseSize);
     ASSERT_EFI_ERROR (Status);
-  }
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->PcieBaseAddress: %lx \n",AcpiBoardInfo->PcieBaseAddress));
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->PcieBaseSize: %lx \n",AcpiBoardInfo->PcieBaseSize));
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->PmTimerRegBase: %lx \n",AcpiBoardInfo->PmTimerRegBase));
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->ResetValue: %lx \n",AcpiBoardInfo->ResetValue));
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->PmEvtBase: %lx \n",AcpiBoardInfo->PmEvtBase));
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->PmGpeEnBase: %lx \n",AcpiBoardInfo->PmGpeEnBase));
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->PmCtrlRegBase: %lx \n",AcpiBoardInfo->PmCtrlRegBase));
+     DEBUG ((DEBUG_ERROR, "[KBT] AcpiBoardInfo->ResetRegAddress: %lx \n",AcpiBoardInfo->ResetRegAddress));
+
+  }*/
 
   //
   // Find the frame buffer information and update PCDs
