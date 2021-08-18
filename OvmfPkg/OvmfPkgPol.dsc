@@ -24,6 +24,7 @@
   BUILD_TARGETS                  = NOOPT|DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = OvmfPkg/OvmfPkgPol.fdf
+  PCD_DYNAMIC_AS_DYNAMICEX            = TRUE
 
   #
   # Defines for default states.  These can be changed on the command line.
@@ -659,17 +660,22 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmInstanceGuid|{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 !endif
 
-[PcdsDynamicDefault.X64]
-  # IPv4 and IPv6 PXE Boot support.
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv4PXESupport|0x01
-  gEfiNetworkPkgTokenSpaceGuid.PcdIPv6PXESupport|0x01
-
 [PcdsDynamicHii]
 !if $(TPM_ENABLE) == TRUE && $(TPM_CONFIG_ENABLE) == TRUE
   gEfiSecurityPkgTokenSpaceGuid.PcdTcgPhysicalPresenceInterfaceVer|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x0|"1.3"|NV,BS
   gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|L"TCG2_VERSION"|gTcg2ConfigFormSetGuid|0x8|3|NV,BS
 !endif
 
+[PcdsDynamicExDefault]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdNvStoreDefaultValueBuffer|{0x0}
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetNvStoreDefaultId|0x0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdVpdBaseAddress64|0x0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdS3BootScriptTablePrivateDataPtr|0x0
+  gEfiMdeModulePkgTokenSpaceGuid.PcdS3BootScriptTablePrivateSmmDataPtr|0x0
+  gEfiNetworkPkgTokenSpaceGuid.PcdIPv4PXESupport|0x01
+  gEfiNetworkPkgTokenSpaceGuid.PcdIPv6PXESupport|0x01
+  gUefiOvmfPkgTokenSpaceGuid.PcdEmuVariableEvent|0
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfFlashVariablesEnable|FALSE
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform.
