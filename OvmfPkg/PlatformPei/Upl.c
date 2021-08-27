@@ -14,7 +14,6 @@
 #include <Library/PcdLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <UniversalPayload/SerialPortInfo.h>
-#include <Guid/AcpiBoardInfoGuid.h>
 #include <Protocol/DevicePath.h>
 #include <UniversalPayload/PciRootBridges.h>
 #include <Library/QemuFwCfgLib.h>
@@ -305,7 +304,6 @@ UplInitialization (
 {
   EFI_FIRMWARE_VOLUME_HEADER        *UplFv;
   UNIVERSAL_PAYLOAD_SERIAL_PORT_INFO              *Serial;
-  ACPI_BOARD_INFO                   *AcpiBoardInfo;
   UNIVERSAL_PAYLOAD_PCI_ROOT_BRIDGES              *PciRootBridgeInfo;
   UINT16                            HostBridgeDevId;
   UINTN                             Pmba;
@@ -344,11 +342,6 @@ UplInitialization (
   Serial->UseMmio = PcdGetBool (PcdSerialUseMmio);
 
 
-  AcpiBoardInfo = BuildGuidHob (&gUefiAcpiBoardInfoGuid, sizeof (ACPI_BOARD_INFO));
-  AcpiBoardInfo->PcieBaseAddress = PcdGet64 (PcdPciExpressBaseAddress);
-  AcpiBoardInfo->PcieBaseSize = SIZE_256MB;
-
-  AcpiBoardInfo->PmTimerRegBase = (PciRead32 (Pmba) & ~PMBA_RTE) + ACPI_TIMER_OFFSET;
 
 
 
