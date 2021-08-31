@@ -27,6 +27,9 @@ PeiFvInitialization (
   )
 {
   BOOLEAN SecureS3Needed;
+  EFI_FIRMWARE_VOLUME_HEADER          *FvInfo;
+
+  FvInfo = NULL;
 
   DEBUG ((DEBUG_INFO, "Platform PEI Firmware Volume Initialization\n"));
 
@@ -78,17 +81,24 @@ PeiFvInitialization (
       );
   }
 
-  //
-  // Let PEI know about the DXE FV so it can find the DXE Core
-  //
-  PeiServicesInstallFvInfoPpi (
-    NULL,
-    (VOID *)(UINTN) PcdGet32 (PcdOvmfDxeMemFvBase),
-    PcdGet32 (PcdOvmfDxeMemFvSize),
-    NULL,
-    NULL
-    );
-
+  FvInfo = (EFI_FIRMWARE_VOLUME_HEADER *) ((UINTN)PcdGet32 (PcdOvmfPldFvBase));
+  if (FvInfo != NULL) {
+    ASSERT (FvInfo->FvLength == PcdGet32 (PcdOvmfPldFvSize));
+    DEBUG ((DEBUG_INFO, "=====================Report UPL FV=======================================\n"));
+    PeiServicesInstallFvInfoPpi (&FvInfo->FileSystemGuid, FvInfo, (UINT32) FvInfo->FvLength, NULL, NULL);
+  }
+  else {
+    //
+    // Let PEI know about the DXE FV so it can find the DXE Core
+    //
+    PeiServicesInstallFvInfoPpi (
+      NULL,
+      (VOID *)(UINTN) PcdGet32 (PcdOvmfDxeMemFvBase),
+      PcdGet32 (PcdOvmfDxeMemFvSize),
+      NULL,
+      NULL
+      );
+  }
   return EFI_SUCCESS;
 }
 

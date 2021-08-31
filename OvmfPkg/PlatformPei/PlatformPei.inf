@@ -106,6 +106,8 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuBootLogicalProcessorNumber
   gUefiCpuPkgTokenSpaceGuid.PcdCpuApStackSize
   gUefiCpuPkgTokenSpaceGuid.PcdSevEsIsEnabled
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfPldFvBase
+  gUefiOvmfPkgTokenSpaceGuid.PcdOvmfPldFvSize
 
 [FixedPcd]
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
