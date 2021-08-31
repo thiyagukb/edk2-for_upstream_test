@@ -309,7 +309,7 @@ UplInitialization (
   UNIVERSAL_PAYLOAD_PCI_ROOT_BRIDGES              *PciRootBridgeInfo;
   UINT16                            HostBridgeDevId;
   UINTN                             Pmba;
-
+  Pmba = 0;
   DEBUG ((DEBUG_INFO, "=====================Report UPL FV=======================================\n"));
   UplFv = (EFI_FIRMWARE_VOLUME_HEADER *) PcdGet32 (PcdOvmfPldFvBase);
   ASSERT (UplFv->FvLength == PcdGet32 (PcdOvmfPldFvSize));
