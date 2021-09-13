@@ -63,6 +63,7 @@ Abstract:
 #include <Guid/DebugAgentGuid.h>
 
 #include <OvmfPlatforms.h>
+#include <Library/PlatformBootManagerLib.h>
 
 extern EFI_DEVICE_PATH_PROTOCOL   *gPlatformConnectSequence[];
 extern ACPI_HID_DEVICE_PATH       gPnpPs2KeyboardDeviceNode;
