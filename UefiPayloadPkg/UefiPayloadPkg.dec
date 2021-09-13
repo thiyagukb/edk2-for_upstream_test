@@ -33,7 +33,6 @@
   gEdkiiBootManagerMenuFileGuid = { 0xdf939333, 0x42fc, 0x4b2a, { 0xa5, 0x9e, 0xbb, 0xae, 0x82, 0x81, 0xfe, 0xef }}
 
   gUefiSystemTableInfoGuid = {0x16c8a6d0, 0xfe8a, 0x4082, {0xa2, 0x8, 0xcf, 0x89, 0xc4, 0x29, 0x4, 0x33}}
-  gUefiAcpiBoardInfoGuid   = {0xad3d31b, 0xb3d8, 0x4506, {0xae, 0x71, 0x2e, 0xf1, 0x10, 0x6, 0xd9, 0xf}}
   gUefiSerialPortInfoGuid  = { 0x6c6872fe, 0x56a9, 0x4403, { 0xbb, 0x98, 0x95, 0x8d, 0x62, 0xde, 0x87, 0xf1 } }
   gLoaderMemoryMapInfoGuid = { 0xa1ff7424, 0x7a1a, 0x478e, { 0xa9, 0xe4, 0x92, 0xf3, 0x57, 0xd1, 0x28, 0x32 } }
 
@@ -77,3 +76,28 @@ gUefiPayloadPkgTokenSpaceGuid.PcdMemoryTypeEfiRuntimeServicesCode|0x80|UINT32|0x
 gUefiPayloadPkgTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x02000000|UINT32|0x00000017
 
 gUefiPayloadPkgTokenSpaceGuid.PcdPcdDriverFile|{ 0x57, 0x72, 0xcf, 0x80, 0xab, 0x87, 0xf9, 0x47, 0xa3, 0xfe, 0xD5, 0x0B, 0x76, 0xd8, 0x95, 0x41 }|VOID*|0x00000018
+
+[PcdsDynamic, PcdsDynamicEx]
+## Defines the 32-bit Timer register access address that resides within the ACPI BAR.
+# @Prompt ACPI PM1 timer register address
+gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1TimerRegister           |0|UINT32|0x00000019
+
+## Defines the Reset register access address that resides within the ACPI BAR.
+# @Prompt ACPI reset register address
+gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetRegister              |0|UINT64|0x00000020
+
+## Defines the reset value writing to ACPI reset register.
+# @Prompt Reset value to ACPI reset register
+gUefiPayloadPkgTokenSpaceGuid.PcdAcpiResetValue                 |0|UINT8|0x00000021
+
+## Defines the system port address of the PM1a Control Register Block.
+# @Prompt PM1a control register address
+gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1aControlAddress         |0|UINT32|0x00000022
+
+## Defines the system port address of the PM1a Event Register Block.
+# @Prompt PM1a event register register
+gUefiPayloadPkgTokenSpaceGuid.PcdAcpiPm1aEventAddress           |0|UINT32|0x00000023
+
+## Defines the General-Purpose Event 0 Enable Register
+# @Prompt ACPI GPE0 enable register
+gUefiPayloadPkgTokenSpaceGuid.PcdAcpiGpe0EnableAddress          |0|UINT32|0x00000024
