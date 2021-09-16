@@ -722,7 +722,7 @@
       NULL|OvmfPkg/Library/QemuPayloadPcdListLibNull/QemuPayloadPcdListLibNull.inf
   }
 !endif
-
+  OvmfPkg/QemuUniversalPayload/AcpiPeim/OvmfAcpiPeim.inf 
   OvmfPkg/PlatformPei/PlatformPei.inf
   UefiCpuPkg/Universal/Acpi/S3Resume2Pei/S3Resume2Pei.inf {
     <LibraryClasses>
@@ -901,7 +901,6 @@
   # ACPI Support
   #
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  OvmfPkg/AcpiPlatformDxe/QemuFwCfgAcpiPlatformDxe.inf
   MdeModulePkg/Universal/Acpi/S3SaveStateDxe/S3SaveStateDxe.inf
   MdeModulePkg/Universal/Acpi/BootScriptExecutorDxe/BootScriptExecutorDxe.inf
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
