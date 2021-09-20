@@ -52,6 +52,7 @@
   HobLib
   PeCoffLib
   UefiCpuLib
+  AcpiParserLib
 
 [Guids]
   gEfiMemoryTypeInformationGuid
@@ -71,6 +72,7 @@
   gUniversalPayloadPciRootBridgeInfoGuid
   gUniversalPayloadSmbios3TableGuid
   gEdkiiBootManagerMenuFileGuid
+  gUniversalPayloadAcpiTableGuid
 
 [FeaturePcd.IA32]
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeIplSwitchToLongMode      ## CONSUMES
@@ -99,3 +101,5 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdDxeNxMemoryProtectionPolicy ## SOMETIMES_CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdImageProtectionPolicy       ## SOMETIMES_CONSUMES
 
+[Depex]
+  gUniversalPayloadAcpiTableGuid

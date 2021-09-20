@@ -376,6 +376,11 @@ _ModuleEntryPoint (
   PHYSICAL_ADDRESS              DxeCoreEntryPoint;
   EFI_PEI_HOB_POINTERS          Hob;
   EFI_FIRMWARE_VOLUME_HEADER    *DxeFv;
+  ACPI_BOARD_INFO               AcpiBoardInfo;
+  ACPI_BOARD_INFO               *NewAcpiBoardInfo;
+  EFI_HOB_GUID_TYPE             *GuidHob;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE  *AcpiTableHob;
+
 
   mHobList = (VOID *) BootloaderParameter;
   DxeFv    = NULL;
@@ -392,6 +397,21 @@ _ModuleEntryPoint (
     PrintHob (mHobList);
   );
 
+  //
+  // Create guid hob for acpi board information
+  //
+  GuidHob = GetFirstGuidHob (&gUniversalPayloadAcpiTableGuid);
+  if (GuidHob != NULL) {
+   AcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
+   Status = ParseAcpiInfo (AcpiTableHob->Rsdp, &AcpiBoardInfo);
+   ASSERT_EFI_ERROR (Status);
+   if (!EFI_ERROR (Status)) {
+     NewAcpiBoardInfo = BuildGuidHob (&gUefiAcpiBoardInfoGuid, sizeof (ACPI_BOARD_INFO));
+     ASSERT (NewAcpiBoardInfo != NULL);
+     CopyMem (NewAcpiBoardInfo, &AcpiBoardInfo, sizeof (ACPI_BOARD_INFO));
+     DEBUG ((DEBUG_INFO, "Create acpi board info guid hob\n"));
+   }
+  }
   // Initialize floating point operating environment to be compliant with UEFI spec.
   InitializeFloatingPointUnits ();
 
