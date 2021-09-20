@@ -35,6 +35,7 @@
 #include <UniversalPayload/UniversalPayload.h>
 #include <UniversalPayload/ExtraData.h>
 #include <Guid/PcdDataBaseSignatureGuid.h>
+#include <Library/AcpiParserLib.h>
 
 #define LEGACY_8259_MASK_REGISTER_MASTER  0x21
 #define LEGACY_8259_MASK_REGISTER_SLAVE   0xA1

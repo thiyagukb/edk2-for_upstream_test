@@ -222,6 +222,7 @@
 !endif
   PlatformBootManagerLib|UefiPayloadPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   IoApicLib|PcAtChipsetPkg/Library/BaseIoApicLib/BaseIoApicLib.inf
+  AcpiParserLib|UefiPayloadPkg/Library/AcpiParserLib/AcpiParserLib.inf
 
   #
   # Misc
