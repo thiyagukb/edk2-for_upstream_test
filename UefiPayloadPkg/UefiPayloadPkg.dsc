@@ -212,6 +212,7 @@
   #
   # Platform
   #
+  AcpiParserLib|UefiPayloadPkg/Library/AcpiParserLib/AcpiParserLib.inf
   TimerLib|UefiPayloadPkg/Library/AcpiTimerLib/AcpiTimerLib.inf
   ResetSystemLib|UefiPayloadPkg/Library/ResetSystemLib/ResetSystemLib.inf
   SerialPortLib|MdeModulePkg/Library/BaseSerialPortLib16550/BaseSerialPortLib16550.inf
