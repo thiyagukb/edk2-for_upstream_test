@@ -13,6 +13,8 @@
 #include <Library/HobLib.h>
 #include <Library/PciSegmentInfoLib.h>
 #include <Library/DebugLib.h>
+#include <UniversalPayload/AcpiTable.h>
+#include <Library/AcpiParserLib.h>
 
 STATIC PCI_SEGMENT_INFO mPciSegment0 = {
   0,  // Segment number
@@ -37,7 +39,8 @@ GetPciSegmentInfo (
   )
 {
   EFI_HOB_GUID_TYPE  *GuidHob;
-  ACPI_BOARD_INFO    *AcpiBoardInfo;
+  ACPI_BOARD_INFO    AcpiBoardInfo;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE  *AcpiTableHob;
 
   ASSERT (Count != NULL);
   if (Count == NULL) {
@@ -46,13 +49,16 @@ GetPciSegmentInfo (
 
   if (mPciSegment0.BaseAddress == 0) {
     //
-    // Find the acpi board information guid hob
+    // Find the acpi table
     //
-    GuidHob = GetFirstGuidHob (&gUefiAcpiBoardInfoGuid);
+    GuidHob = GetFirstGuidHob (&gUniversalPayloadAcpiTableGuid);
     ASSERT (GuidHob != NULL);
 
-    AcpiBoardInfo = (ACPI_BOARD_INFO *) GET_GUID_HOB_DATA (GuidHob);
-    mPciSegment0.BaseAddress = AcpiBoardInfo->PcieBaseAddress;
+    AcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *) GET_GUID_HOB_DATA (GuidHob);
+    
+    ParseAcpiInfo(AcpiTableHob->Rsdp,&AcpiBoardInfo);
+
+    mPciSegment0.BaseAddress = AcpiBoardInfo.PcieBaseAddress;
   }
   *Count = 1;
   return &mPciSegment0;

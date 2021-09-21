@@ -34,7 +34,7 @@
   IoLib
   HobLib
   BaseMemoryLib
+  AcpiParserLib
 
 [Guids]
-  gUefiAcpiBoardInfoGuid
-
+  gUniversalPayloadAcpiTableGuid

@@ -15,6 +15,8 @@
 
 #include <Guid/AcpiBoardInfoGuid.h>
 #include <IndustryStandard/Acpi.h>
+#include <UniversalPayload/AcpiTable.h>
+#include <Library/AcpiParserLib.h>
 
 #define ACPI_TIMER_COUNT_SIZE  BIT24
 
@@ -36,17 +38,20 @@ AcpiTimerLibConstructor (
   )
 {
   EFI_HOB_GUID_TYPE  *GuidHob;
-  ACPI_BOARD_INFO    *pAcpiBoardInfo;
+  ACPI_BOARD_INFO    AcpiBoardInfo;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE  *pAcpiTableHob;
 
   //
-  // Find the acpi board information guid hob
+  // Find the acpi table
   //
-  GuidHob = GetFirstGuidHob (&gUefiAcpiBoardInfoGuid);
+  GuidHob = GetFirstGuidHob (&gUniversalPayloadAcpiTableGuid);
   ASSERT (GuidHob != NULL);
 
-  pAcpiBoardInfo = (ACPI_BOARD_INFO *)GET_GUID_HOB_DATA (GuidHob);
+  pAcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
 
-  mPmTimerReg = (UINTN)pAcpiBoardInfo->PmTimerRegBase;
+  ParseAcpiInfo(pAcpiTableHob->Rsdp,&AcpiBoardInfo);
+
+  mPmTimerReg = (UINTN)AcpiBoardInfo.PmTimerRegBase;
 
   return EFI_SUCCESS;
 }

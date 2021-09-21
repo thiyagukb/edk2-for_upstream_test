@@ -13,6 +13,8 @@
 #include <Library/HobLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Guid/AcpiBoardInfoGuid.h>
+#include <UniversalPayload/AcpiTable.h>
+#include <Library/AcpiParserLib.h>
 
 ACPI_BOARD_INFO    mAcpiBoardInfo;
 
@@ -29,16 +31,20 @@ ResetSystemLibConstructor (
   )
 {
   EFI_HOB_GUID_TYPE  *GuidHob;
-  ACPI_BOARD_INFO    *AcpiBoardInfoPtr;
+  ACPI_BOARD_INFO    AcpiBoardInfoPtr;
+  UNIVERSAL_PAYLOAD_ACPI_TABLE  *AcpiTableHob;
 
   //
-  // Find the acpi board information guid hob
+  // Find the acpi table
   //
-  GuidHob = GetFirstGuidHob (&gUefiAcpiBoardInfoGuid);
+  GuidHob = GetFirstGuidHob (&gUniversalPayloadAcpiTableGuid);
   ASSERT (GuidHob != NULL);
 
-  AcpiBoardInfoPtr = (ACPI_BOARD_INFO *)GET_GUID_HOB_DATA (GuidHob);
-  CopyMem (&mAcpiBoardInfo, AcpiBoardInfoPtr, sizeof (ACPI_BOARD_INFO));
+  AcpiTableHob = (UNIVERSAL_PAYLOAD_ACPI_TABLE *)GET_GUID_HOB_DATA (GuidHob);
+
+  ParseAcpiInfo(AcpiTableHob->Rsdp,&AcpiBoardInfoPtr);
+
+  CopyMem (&mAcpiBoardInfo, &AcpiBoardInfoPtr, sizeof (ACPI_BOARD_INFO));
 
   return EFI_SUCCESS;
 }

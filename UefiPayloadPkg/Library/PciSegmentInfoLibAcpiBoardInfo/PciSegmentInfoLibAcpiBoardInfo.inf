@@ -28,9 +28,14 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   UefiPayloadPkg/UefiPayloadPkg.dec
 
 [LibraryClasses]
   PcdLib
   HobLib
   DebugLib
+  AcpiParserLib
+
+[Guids]
+  gUniversalPayloadAcpiTableGuid
