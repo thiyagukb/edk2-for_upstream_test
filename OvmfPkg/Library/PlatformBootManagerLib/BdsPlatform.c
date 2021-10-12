@@ -25,6 +25,30 @@ VOID          *mEmuVariableEventReg;
 EFI_EVENT     mEmuVariableEvent;
 UINT16        mHostBridgeDevId;
 
+typedef struct {
+  ACPI_HID_DEVICE_PATH              Ps2keyboard;
+  EFI_DEVICE_PATH_PROTOCOL        End;
+} PS2_KEYBOARD_DEVICE_PATH;
+
+EFI_HANDLE                                KbHandle;
+PS2_KEYBOARD_DEVICE_PATH gPnpPs2KeyboardDevicePath = {
+
+  {
+    {
+      ACPI_DEVICE_PATH,
+      ACPI_DP,
+      {
+        (UINT8) (sizeof(ACPI_HID_DEVICE_PATH)),
+        (UINT8) ((sizeof(ACPI_HID_DEVICE_PATH)) >> 8)
+      }
+    },
+    EISA_PNP_ID(0x0303), // HID
+    0                    // UID
+  },
+
+ { END_DEVICE_PATH_TYPE, END_ENTIRE_DEVICE_PATH_SUBTYPE, { sizeof (EFI_DEVICE_PATH_PROTOCOL), 0 } }
+};
+
 //
 // Table of host IRQs matching PCI IRQs A-D
 // (for configuring PCI Interrupt Line register)
@@ -347,10 +371,25 @@ PlatformBootManagerBeforeConsole (
   EFI_STATUS    Status;
   UINT16        FrontPageTimeout;
   RETURN_STATUS PcdStatus;
+  EFI_DEVICE_PATH_PROTOCOL *DevicePath;
+  EFI_HANDLE                  DriverHandle;
+
+  DevicePath = (EFI_DEVICE_PATH_PROTOCOL *)&gPnpPs2KeyboardDevicePath;
 
   DEBUG ((DEBUG_INFO, "PlatformBootManagerBeforeConsole\n"));
   InstallDevicePathCallback ();
 
+  Status = gBS->LocateDevicePath (
+                &gEfiDevicePathProtocolGuid,
+                &DevicePath,
+                &DriverHandle
+                );
+
+  if(!EFI_ERROR(Status))
+  {
+    EfiBootManagerUpdateConsoleVariable (ConIn,DevicePathFromHandle (DriverHandle), NULL);
+  }
+  
   VisitAllInstancesOfProtocol (&gEfiPciRootBridgeIoProtocolGuid,
     ConnectRootBridge, NULL);
 

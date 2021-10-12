@@ -2,7 +2,7 @@
   goto ovmf
 )
 
-call py UefiPayloadPkg\UniversalPayloadBuild.py -t CLANGPDB 
+call py UefiPayloadPkg\UniversalPayloadBuild.py -t CLANGPDB -D PS2_KEYBOARD_ENABLE=TRUE
 if not %ERRORLEVEL% == 0 exit /b 1
 
 

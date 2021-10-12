@@ -146,7 +146,7 @@ INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 INF OvmfPkg/SioBusDxe/SioBusDxe.inf
 !endif
 !if $(PS2_KEYBOARD_ENABLE) == TRUE
-INF MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
+INF MdeModulePkg/Universal/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
 !endif
 INF MdeModulePkg/Bus/Isa/Ps2MouseDxe/Ps2MouseDxe.inf
 
