@@ -143,7 +143,7 @@ INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
 INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 !endif
 !if $(SIO_BUS_ENABLE) == TRUE
-INF OvmfPkg/SioBusDxe/SioBusDxe.inf
+#INF OvmfPkg/SioBusDxe/SioBusDxe.inf
 !endif
 !if $(PS2_KEYBOARD_ENABLE) == TRUE
 INF MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf

@@ -63,6 +63,7 @@ Abstract:
 #include <Guid/DebugAgentGuid.h>
 
 #include <OvmfPlatforms.h>
+#include <Guid/SerialPortLibVendor.h>
 
 extern EFI_DEVICE_PATH_PROTOCOL   *gPlatformConnectSequence[];
 extern ACPI_HID_DEVICE_PATH       gPnpPs2KeyboardDeviceNode;
@@ -161,11 +162,19 @@ typedef struct {
   UINTN                     ConnectType;
 } PLATFORM_CONSOLE_CONNECT_ENTRY;
 
+typedef struct {
+  VENDOR_DEVICE_PATH        Guid;
+  UART_DEVICE_PATH          Uart;
+  VENDOR_DEVICE_PATH        TerminalType;
+  EFI_DEVICE_PATH_PROTOCOL  End;
+} SERIAL_DEVICE_PATH;
+
 #define CONSOLE_OUT BIT0
 #define CONSOLE_IN  BIT1
 #define STD_ERROR   BIT2
 extern PLATFORM_CONSOLE_CONNECT_ENTRY  gPlatformConsole[];
 extern PLATFORM_CONSOLE_CONNECT_ENTRY  gXenPlatformConsole[];
+extern SERIAL_DEVICE_PATH              mSerialDevicePath;
 
 //
 // Platform BDS Functions

@@ -878,9 +878,9 @@
   #
   # ISA Support
   #
-  OvmfPkg/SioBusDxe/SioBusDxe.inf
-  MdeModulePkg/Bus/Pci/PciSioSerialDxe/PciSioSerialDxe.inf
-  MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
+  #OvmfPkg/SioBusDxe/SioBusDxe.inf
+  #MdeModulePkg/Bus/Pci/PciSioSerialDxe/PciSioSerialDxe.inf
+  #MdeModulePkg/Universal/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
 
   #
   # SMBIOS Support

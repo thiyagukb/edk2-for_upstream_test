@@ -567,7 +567,7 @@
   MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 !endif
 !if $(SIO_BUS_ENABLE) == TRUE
-  OvmfPkg/SioBusDxe/SioBusDxe.inf
+  #OvmfPkg/SioBusDxe/SioBusDxe.inf
 !endif
 !if $(PS2_KEYBOARD_ENABLE) == TRUE
   MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf

@@ -351,6 +351,12 @@ PlatformBootManagerBeforeConsole (
   DEBUG ((DEBUG_INFO, "PlatformBootManagerBeforeConsole\n"));
   InstallDevicePathCallback ();
 
+  
+  mSerialDevicePath.Uart.BaudRate = PcdGet64 (PcdUartDefaultBaudRate);
+  mSerialDevicePath.Uart.DataBits = (UINT32) PcdGet8 (PcdUartDefaultDataBits);
+  mSerialDevicePath.Uart.Parity   = (UINT32) PcdGet8 (PcdUartDefaultParity);
+  mSerialDevicePath.Uart.StopBits = (UINT32) PcdGet8 (PcdUartDefaultStopBits);
+  
   VisitAllInstancesOfProtocol (&gEfiPciRootBridgeIoProtocolGuid,
     ConnectRootBridge, NULL);
 

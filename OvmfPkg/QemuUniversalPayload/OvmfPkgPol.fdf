@@ -249,9 +249,9 @@ INF  OvmfPkg/QemuKernelLoaderFsDxe/QemuKernelLoaderFsDxe.inf
 INF  OvmfPkg/SataControllerDxe/SataControllerDxe.inf
 
 
-INF  OvmfPkg/SioBusDxe/SioBusDxe.inf
+#INF  OvmfPkg/SioBusDxe/SioBusDxe.inf
 !if $(SOURCE_DEBUG_ENABLE) == FALSE
-INF  MdeModulePkg/Bus/Pci/PciSioSerialDxe/PciSioSerialDxe.inf
+#INF  MdeModulePkg/Bus/Pci/PciSioSerialDxe/PciSioSerialDxe.inf
 !endif
 
 

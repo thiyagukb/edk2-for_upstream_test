@@ -49,6 +49,24 @@ ACPI_HID_DEVICE_PATH       gPnp16550ComPortDeviceNode = gPnp16550ComPort;
 UART_DEVICE_PATH           gUartDeviceNode            = gUart;
 VENDOR_DEVICE_PATH         gTerminalTypeDeviceNode    = gPcAnsiTerminal;
 
+
+SERIAL_DEVICE_PATH mSerialDevicePath = {
+  {
+    { HARDWARE_DEVICE_PATH, HW_VENDOR_DP, { sizeof (VENDOR_DEVICE_PATH), 0} },
+    EDKII_SERIAL_PORT_LIB_VENDOR_GUID
+  },
+  {
+    { MESSAGING_DEVICE_PATH, MSG_UART_DP, { sizeof (UART_DEVICE_PATH), 0} },
+    0,                  // Reserved
+    0,                  // BaudRate
+    0,                  // DataBits
+    0,                  // Parity
+    0                   // StopBits
+  },
+  gPcAnsiTerminal,
+  { END_DEVICE_PATH_TYPE, END_ENTIRE_DEVICE_PATH_SUBTYPE, { sizeof (EFI_DEVICE_PATH_PROTOCOL), 0 } }
+};
+
 //
 // Platform specific keyboard device path
 //
@@ -180,6 +198,10 @@ PLATFORM_CONSOLE_CONNECT_ENTRY   gPlatformConsole[] = {
   {
     (EFI_DEVICE_PATH_PROTOCOL *) &gDebugAgentUartDevicePath,
     (CONSOLE_OUT | CONSOLE_IN | STD_ERROR)
+  },
+  {
+    (EFI_DEVICE_PATH_PROTOCOL *) &mSerialDevicePath,
+    (CONSOLE_OUT | CONSOLE_IN)
   },
   {
     (EFI_DEVICE_PATH_PROTOCOL *)&gUsbKeyboardDevicePath,
