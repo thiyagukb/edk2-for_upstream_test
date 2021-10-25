@@ -572,7 +572,7 @@
 !if $(PS2_KEYBOARD_ENABLE) == TRUE
   MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
 !endif
-  MdeModulePkg/Bus/Isa/Ps2MouseDxe/Ps2MouseDxe.inf
+  MdeModulePkg/Universal/Ps2MouseDxe/Ps2MouseDxe.inf
 
   #
   # Console Support
